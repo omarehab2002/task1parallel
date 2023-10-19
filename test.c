@@ -4,11 +4,20 @@
 #define client_LEN 100
 #define client_NAME_LEN 33
 #define client_PASSWORD_LEN 33
+// #define true 1
+// #define false 0
+typedef union
+{
+    char client_Active[8];
+
+} Active;
 
 struct client
 {
     char client_name[client_NAME_LEN];
     char client_password[client_PASSWORD_LEN];
+    Active check_Active;
+
 }; // client type
 
 struct client client[client_LEN]; // array type client
@@ -31,6 +40,16 @@ int SignUp()
 
     printf("Enter password: ");
     scanf("%s", New_Client.client_password);
+    printf(" enter in active  1 or 0 or true or false  \n");
+    printf("Enter active: ");
+    scanf("%s", New_Client.check_Active.client_Active);
+
+    // if (strcmp("0", New_Client.check_Active.client_Active) == 0||strcmp("false", New_Client.check_Active.client_Active) == 0)
+    //     {
+    //         printf("The account must be active please enter in active 1 or true \n");
+
+    //         return 0;
+    //     }
 
     for (int i = 0; i <= client_number; i++)
     {
@@ -60,13 +79,25 @@ int login()
 
     printf("Enter password: ");
     scanf("%s", clientpassword);
+    
 
     for (int i = 0; i < client_number; i++)
     {
+
         if (strcmp(clientname, client[i].client_name) == 0 && strcmp(clientpassword, client[i].client_password) == 0)
         {
-            printf("Login successful.\n");
-            return 0;
+            
+        
+
+        if (strcmp("0", client[i].check_Active.client_Active) == 0 ||strcmp("false", client[i].check_Active.client_Active) == 0)
+        {
+            printf("Login failed  this account not active.\n");
+            return 0 ;
+    
+        }
+
+        printf("Login successful.\n");
+        return 0;
         }
     }
 
